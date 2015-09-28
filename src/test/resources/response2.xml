@@ -1,0 +1,62 @@
+<sxgeo>
+    <ip num="93.92.217.228" request="-4" error="" created="2015.09.22" timestamp="1442880235">
+        <city>
+            <id>1496747</id>
+            <lat>55.0415</lat>
+            <lon>82.9346</lon>
+            <name_ru>Новосибирск</name_ru>
+            <name_en>Novosibirsk</name_en>
+            <name_de>Nowosibirsk</name_de>
+            <name_fr>Novossibirsk</name_fr>
+            <name_it>Novosibirsk</name_it>
+            <name_es>Novosibirsk</name_es>
+            <name_pt>Novosibirsk</name_pt>
+            <okato>50 401</okato>
+            <vk>99</vk>
+            <population>1567087</population>
+        </city>
+        <region>
+            <id>1496745</id>
+            <lat>55</lat>
+            <lon>80</lon>
+            <name_ru>Новосибирская область</name_ru>
+            <name_en>Novosibirskaya Oblast'</name_en>
+            <name_de>Oblast Nowosibirsk</name_de>
+            <name_fr>Oblast de Novossibirsk</name_fr>
+            <name_it>Oblast' di Novosibirsk</name_it>
+            <name_es>Óblast de Novosibirsk</name_es>
+            <name_pt>Oblast de Novosibirsk</name_pt>
+            <iso>RU-NVS</iso>
+            <timezone>Asia/Novosibirsk</timezone>
+            <okato>50</okato>
+            <auto>54, 154</auto>
+            <vk>1143518</vk>
+            <utc>6</utc>
+        </region>
+        <country>
+            <id>185</id>
+            <iso>RU</iso>
+            <continent>EU</continent>
+            <lat>60</lat>
+            <lon>100</lon>
+            <name_ru>Россия</name_ru>
+            <name_en>Russia</name_en>
+            <name_de>Russland</name_de>
+            <name_fr>Russie</name_fr>
+            <name_it>Russia</name_it>
+            <name_es>Rusia</name_es>
+            <name_pt>Rússia</name_pt>
+            <timezone>Europe/Moscow</timezone>
+            <area>17100000</area>
+            <population>140702000</population>
+            <capital_id>524901</capital_id>
+            <capital_ru>Москва</capital_ru>
+            <capital_en>Moscow</capital_en>
+            <cur_code>RUB</cur_code>
+            <phone>7</phone>
+            <neighbours>GE,CN,BY,UA,KZ,LV,PL,EE,LT,FI,MN,NO,AZ,KP</neighbours>
+            <vk>1</vk>
+            <utc>3</utc>
+        </country>
+    </ip>
+</sxgeo>

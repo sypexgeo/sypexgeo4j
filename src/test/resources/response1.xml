@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sxgeo>
+    <ip num="123.45.67.89">
+        <city>
+            <id>1835848</id>
+            <lat>37.566</lat>
+            <lon>126.9784</lon>
+            <name_ru>Сеул</name_ru>
+            <name_en>Seoul</name_en>
+            <okato></okato>
+        </city>
+        <region>
+            <id>1835847</id>
+            <lat>37.58</lat>
+            <lon>127</lon>
+            <name_ru>Сеул</name_ru>
+            <name_en>Seoul</name_en>
+            <iso>KR-11</iso>
+            <timezone>Asia/Seoul</timezone>
+            <okato></okato>
+        </region>
+        <country>
+            <id>119</id>
+            <iso>KR</iso>
+            <continent>AS</continent>
+            <lat>36.5</lat>
+            <lon>127.75</lon>
+            <name_ru>Южная Корея</name_ru>
+            <name_en>South Korea</name_en>
+            <timezone>Asia/Seoul</timezone>
+        </country>
+    </ip>
+</sxgeo>
