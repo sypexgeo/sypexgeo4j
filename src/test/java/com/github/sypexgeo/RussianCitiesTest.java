@@ -19,7 +19,7 @@ public class RussianCitiesTest extends BaseSxText {
         SxGeoResult res = result.get(0);
         assertNotNull(res.city);
 
-        assertEquals("Novosibirsk", res.city.name.enName);
-        assertEquals("Новосибирск", res.city.name.ruName);
+        assertEquals("Novosibirsk", res.city.name.getEn());
+        assertEquals("Новосибирск", res.city.name.getRu());
     }
 }

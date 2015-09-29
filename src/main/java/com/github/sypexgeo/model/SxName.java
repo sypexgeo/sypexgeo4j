@@ -1,18 +1,38 @@
 package com.github.sypexgeo.model;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 /**
  *
  */
 public class SxName {
-    @NotNull
-    public final String enName;
-    @NotNull
-    public final String ruName;
 
-    public SxName(@NotNull String ruName, @NotNull String enName) {
-        this.ruName = ruName;
-        this.enName = enName;
+    private final Map<String, String> valuesByCode;
+
+    public SxName(Map<String, String> valuesByCode) {
+        this.valuesByCode = valuesByCode;
     }
+
+    @Nullable
+    public String getRu() {
+        return get(SxLanguage.RU);
+    }
+
+    @Nullable
+    public String getEn() {
+        return get(SxLanguage.EN);
+    }
+
+    @Nullable
+    public String get(SxLanguage l) {
+        return valuesByCode.get(l.code);
+    }
+
+    @Nullable
+    public String get(String languageCode) {
+        return valuesByCode.get(languageCode);
+    }
+
 }

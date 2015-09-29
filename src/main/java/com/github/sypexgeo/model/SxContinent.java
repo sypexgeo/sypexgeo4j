@@ -9,7 +9,9 @@ import java.util.Arrays;
  *
  */
 public enum SxContinent {
-    AS("AS");
+    AS("AS"),
+    EU("EU");
+
 
     @NotNull
     public final String code;

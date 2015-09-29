@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -22,7 +23,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -114,9 +117,14 @@ public class SxRestClient {
 
     @NotNull
     private static SxName parseName(Element e) {
-        String enName = parseRequiredValue(e, "name_en");
-        String ruName = parseRequiredValue(e, "name_ru");
-        return new SxName(ruName, enName);
+        NodeList nodes = e.getChildNodes();
+        Map<String, String> valuesByCode = new HashMap<>();
+        for (Element el : getChildrenByPrefix(e, "name_")) {
+            String code = el.getTagName().substring(5);
+            String val = el.getTextContent();
+            valuesByCode.put(code, val);
+        }
+        return new SxName(valuesByCode);
     }
 
     @NotNull
@@ -143,5 +151,16 @@ public class SxRestClient {
         return SxContinent.fromCode(continent);
     }
 
+    private static List<Element> getChildrenByPrefix(@NotNull Element e, @NotNull String prefix) {
+        NodeList nodes = e.getChildNodes();
+        List<Element> res = new ArrayList<>();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node node = nodes.item(i);
+            if (node instanceof Element && ((Element) node).getTagName().startsWith(prefix)) {
+                res.add((Element) node);
+            }
+        }
+        return res;
+    }
 
 }
