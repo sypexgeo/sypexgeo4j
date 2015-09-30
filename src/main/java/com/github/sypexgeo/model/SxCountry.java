@@ -1,37 +1,29 @@
 package com.github.sypexgeo.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.TimeZone;
 
 /**
  *
  */
-public class SxCountry {
-    @NotNull
-    public final SxId id;
-
+public final class SxCountry extends SxLocation {
     @NotNull
     public final SxISO iso;
 
     @NotNull
     public final SxContinent continent;
 
-    @NotNull
-    public final SxLocation location;
-
-    @NotNull
-    public final SxName name;
-
-    @NotNull
+    @Nullable
     public final TimeZone timeZone;
 
-    public SxCountry(@NotNull SxId id, @NotNull SxISO iso, @NotNull SxContinent continent, @NotNull SxLocation location, @NotNull SxName name, @NotNull TimeZone timeZone) {
-        this.id = id;
+    public SxCountry(@NotNull SxId id, @NotNull SxCoordinates coordinates, @NotNull SxName name, @Nullable SxVkId vkId,
+                     @NotNull SxISO iso, @NotNull SxContinent continent, @Nullable TimeZone timeZone) {
+        super(id, coordinates, name, vkId);
         this.iso = iso;
         this.continent = continent;
-        this.location = location;
-        this.name = name;
         this.timeZone = timeZone;
     }
+    // TODO: equals & hashcode
 }

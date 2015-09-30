@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  *
  */
-public class SxName {
+public final class SxName {
 
     private final Map<String, String> valuesByCode;
 
@@ -35,4 +35,5 @@ public class SxName {
         return valuesByCode.get(languageCode);
     }
 
+    //todo: equals & hashcode
 }

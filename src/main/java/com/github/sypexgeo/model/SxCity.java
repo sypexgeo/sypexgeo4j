@@ -1,27 +1,20 @@
 package com.github.sypexgeo.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
  */
-public class SxCity {
-    @NotNull
-    public final SxId id;
-
-    @NotNull
-    public final SxLocation location;
-
-    @NotNull
-    public final SxName name;
-
+public final class SxCity extends SxLocation {
     @NotNull
     public final SxOkato okato;
 
-    public SxCity(@NotNull SxId id, @NotNull SxLocation location, @NotNull SxName name, @NotNull SxOkato okato) {
-        this.id = id;
-        this.location = location;
-        this.name = name;
+    public SxCity(@NotNull SxId id, @NotNull SxCoordinates coordinates, @NotNull SxName name, @Nullable SxVkId vkId, @NotNull SxOkato okato) {
+        super(id, coordinates, name, vkId);
         this.okato = okato;
     }
+
+    // TODO: equals & hashcode
+
 }

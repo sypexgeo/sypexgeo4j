@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  *
  */
-public class SxGeoResult {
+public final class SxGeoResult {
     @NotNull
     public final String ip;
 
@@ -29,4 +29,6 @@ public class SxGeoResult {
         this.region = region;
         this.country = country;
     }
+
+    // TODO: equals & hashcode
 }

@@ -5,9 +5,9 @@ import com.github.sypexgeo.model.value.IntValue;
 /**
  *
  */
-public final class SxId extends IntValue {
+public final class SxVkId extends IntValue {
 
-    public SxId(int value) {
+    public SxVkId(int value) {
         super(value);
     }
 }

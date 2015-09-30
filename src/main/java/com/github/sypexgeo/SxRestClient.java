@@ -2,14 +2,15 @@ package com.github.sypexgeo;
 
 import com.github.sypexgeo.model.SxCity;
 import com.github.sypexgeo.model.SxContinent;
+import com.github.sypexgeo.model.SxCoordinates;
 import com.github.sypexgeo.model.SxCountry;
 import com.github.sypexgeo.model.SxGeoResult;
 import com.github.sypexgeo.model.SxISO;
 import com.github.sypexgeo.model.SxId;
-import com.github.sypexgeo.model.SxLocation;
 import com.github.sypexgeo.model.SxName;
 import com.github.sypexgeo.model.SxOkato;
 import com.github.sypexgeo.model.SxRegion;
+import com.github.sypexgeo.model.SxVkId;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
 
 /**
  *
@@ -74,50 +76,57 @@ public class SxRestClient {
         SxRegion region = regionNodes.getLength() == 0 ? null : parseRegion((Element) regionNodes.item(0));
 
         NodeList countryNodes = ipNode.getElementsByTagName("country");
-        SxCountry country = countryNodes.getLength() == 0 ? null : parseCountry((Element) cityNodes.item(0));
+        SxCountry country = countryNodes.getLength() == 0 ? null : parseCountry((Element) countryNodes.item(0));
 
         return new SxGeoResult(ip, city, region, country);
     }
 
     private static SxCity parseCity(Element city) {
-        return new SxCity(parseId(city), parseLocation(city), parseName(city), parseOkato(city));
+        return new SxCity(getId(city), getCoordinates(city), getName(city), getVkId(city), getOkato(city));
     }
 
     private static SxRegion parseRegion(Element region) {
-        return new SxRegion(parseId(region), parseLocation(region), parseName(region), parseISO(region), parseTimeZone(region), parseOkato(region));
+        return new SxRegion(getId(region), getCoordinates(region), getName(region), getVkId(region),
+                getIso(region), getTimeZone(region), getOkato(region));
+    }
+
+    @Nullable
+    private static SxVkId getVkId(Element element) {
+        String val = getValue(element, "vk");
+        return val == null || val.isEmpty() ? null : new SxVkId(Integer.parseInt(val));
     }
 
     private static SxCountry parseCountry(Element country) {
-        return new SxCountry(parseId(country), parseISO(country), parseContinent(country), parseLocation(country), parseName(country), parseTimeZone(country));
+        return new SxCountry(getId(country), getCoordinates(country), getName(country), getVkId(country),
+                getIsoNN(country), getContinentNN(country), getTimeZone(country));
     }
 
 
     @NotNull
-    private static String parseRequiredValue(Element e, String tag) {
+    private static String getRequiredValue(Element e, String tag) {
         return e.getElementsByTagName(tag).item(0).getTextContent();
     }
 
     @Nullable
-    private static String parseValue(Element e, String tag) {
+    private static String getValue(Element e, String tag) {
         NodeList nodeList = e.getElementsByTagName(tag);
         return nodeList.getLength() > 0 ? nodeList.item(0).getTextContent() : null;
     }
 
     @NotNull
-    private static SxId parseId(Element e) {
-        return new SxId(Integer.parseInt(parseRequiredValue(e, "id")));
+    private static SxId getId(Element e) {
+        return new SxId(Integer.parseInt(getRequiredValue(e, "id")));
     }
 
     @NotNull
-    private static SxLocation parseLocation(Element e) {
-        String lat = parseRequiredValue(e, "lat");
-        String lon = parseRequiredValue(e, "lon");
-        return new SxLocation(Double.parseDouble(lat), Double.parseDouble(lon));
+    private static SxCoordinates getCoordinates(Element e) {
+        String lat = getRequiredValue(e, "lat");
+        String lon = getRequiredValue(e, "lon");
+        return new SxCoordinates(Double.parseDouble(lat), Double.parseDouble(lon));
     }
 
     @NotNull
-    private static SxName parseName(Element e) {
-        NodeList nodes = e.getChildNodes();
+    private static SxName getName(Element e) {
         Map<String, String> valuesByCode = new HashMap<>();
         for (Element el : getChildrenByPrefix(e, "name_")) {
             String code = el.getTagName().substring(5);
@@ -128,27 +137,38 @@ public class SxRestClient {
     }
 
     @NotNull
-    private static SxOkato parseOkato(Element e) {
-        String okato = parseRequiredValue(e, "okato");
+    private static SxOkato getOkato(Element e) {
+        String okato = getRequiredValue(e, "okato");
         return new SxOkato(okato);
     }
 
-    @NotNull
-    private static SxISO parseISO(Element e) {
-        String iso = parseValue(e, "iso");
-        return new SxISO(iso);
+    @Nullable
+    private static SxISO getIso(Element e) {
+        String iso = getValue(e, "iso");
+        return isEmpty(iso) ? null : new SxISO(iso);
     }
 
     @NotNull
-    private static TimeZone parseTimeZone(Element e) {
-        String timezoneId = parseValue(e, "timezone");
+    private static SxISO getIsoNN(Element e) {
+        return requireNonNull(getIso(e), e);
+    }
+
+    @Nullable
+    private static TimeZone getTimeZone(Element e) {
+        String timezoneId = getValue(e, "timezone");
         return timezoneId != null ? TimeZone.getTimeZone(timezoneId) : null;
     }
 
+    @Nullable
+    private static SxContinent getContinent(Element e) {
+        String continent = getValue(e, "continent");
+        return isEmpty(continent) ? null : SxContinent.fromCode(continent);
+    }
+
+
     @NotNull
-    private static SxContinent parseContinent(Element e) {
-        String continent = parseValue(e, "continent");
-        return SxContinent.fromCode(continent);
+    private static SxContinent getContinentNN(Element e) {
+        return requireNonNull(getContinent(e), e);
     }
 
     private static List<Element> getChildrenByPrefix(@NotNull Element e, @NotNull String prefix) {
@@ -161,6 +181,17 @@ public class SxRestClient {
             }
         }
         return res;
+    }
+
+    private static boolean isEmpty(@Nullable String val) {
+        return val == null || val.isEmpty();
+    }
+
+    private static <T> T requireNonNull(T val, Element e) {
+        if (val == null) {
+            throw new IllegalArgumentException("Value is null! element: " + e);
+        }
+        return val;
     }
 
 }

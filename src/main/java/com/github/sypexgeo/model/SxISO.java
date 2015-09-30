@@ -1,15 +1,13 @@
 package com.github.sypexgeo.model;
 
+import com.github.sypexgeo.model.value.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 /**
  *
  */
-public class SxISO {
-    @NotNull
-    public final String value;
-
-    public SxISO(@NotNull  String value) {
-        this.value = value;
+public final class SxISO extends StringValue {
+    public SxISO(@NotNull String value) {
+        super(value);
     }
 }
