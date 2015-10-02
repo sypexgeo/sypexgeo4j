@@ -19,4 +19,9 @@ public abstract class IntValue {
     public int hashCode() {
         return Integer.hashCode(value);
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ":" + value;
+    }
 }

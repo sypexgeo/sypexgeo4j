@@ -22,4 +22,9 @@ public abstract class StringValue {
     public int hashCode() {
         return value.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ":" + value;
+    }
 }
