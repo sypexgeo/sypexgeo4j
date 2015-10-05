@@ -4,7 +4,7 @@ import com.github.sypexgeo.model.value.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Unified representation for any field name in Sypex response for City, Region or Country fields.
  */
 public class SxValue extends StringValue {
     public static final String ID = "id";

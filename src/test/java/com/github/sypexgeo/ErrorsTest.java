@@ -13,4 +13,23 @@ public class ErrorsTest extends BaseSxText {
         client.get(null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void checkEmptyIp() {
+        client.get("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkMalformedIp1() {
+        client.get("555.555.555.555");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkMalformedIp2() {
+        client.get("100.100.100");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkMalformedIp3() {
+        client.get("yandex.ru");
+    }
 }

@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Entry name for SxCity, SxRegion or SxCountry. Response can contains name in multiple languages.
- * All responses contain Russian and English name variants that are supported by helper methods.
+ * Entry name for SxCity, SxRegion or SxCountry in multiple languages.
  */
 public final class SxName {
 
@@ -19,14 +18,34 @@ public final class SxName {
         this.valuesByCode = valuesByCode;
     }
 
-    @Nullable
-    public String getRu() {
-        return get(SxLanguage.RU);
+    @NotNull
+    public String ruValue() {
+        return Objects.requireNonNull(get(SxLanguage.RU));
     }
 
-    @Nullable
-    public String getEn() {
-        return get(SxLanguage.EN);
+    @NotNull
+    public String enValue() {
+        return Objects.requireNonNull(get(SxLanguage.EN));
+    }
+
+    @NotNull
+    public String deValue() {
+        return Objects.requireNonNull(get(SxLanguage.DE));
+    }
+
+    @NotNull
+    public String frValue() {
+        return Objects.requireNonNull(get(SxLanguage.FR));
+    }
+
+    @NotNull
+    public String esValue() {
+        return Objects.requireNonNull(get(SxLanguage.ES));
+    }
+
+    @NotNull
+    public String ptValue() {
+        return Objects.requireNonNull(get(SxLanguage.PT));
     }
 
     @Nullable

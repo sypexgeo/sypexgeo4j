@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 
 /**
- *
+ * Main class of the package: executes requests for Sypex server.
  */
 public class SxRestClient {
 
@@ -85,7 +85,6 @@ public class SxRestClient {
     private static SxRegion parseRegion(@NotNull Element region) {
         return new SxRegion(getId(region), getCoordinates(region), getName(region), getTimeZone(region), getAttributes(region));
     }
-
 
     private static SxCountry parseCountry(Element country) {
         return new SxCountry(getId(country), getCoordinates(country), getName(country), getTimeZone(country), getAttributes(country));
@@ -157,6 +156,4 @@ public class SxRestClient {
         }
         return result;
     }
-
-
 }

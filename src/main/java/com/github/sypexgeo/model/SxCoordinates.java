@@ -3,7 +3,7 @@ package com.github.sypexgeo.model;
 import java.util.Objects;
 
 /**
- *
+ * Latitude and  longitude coordinates.
  */
 public final class SxCoordinates {
     public final double latitude;

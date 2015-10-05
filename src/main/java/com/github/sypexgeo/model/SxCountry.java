@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- *
+ * Country record in Sypex response.
  */
 public final class SxCountry extends SxLocation {
 
@@ -15,5 +15,4 @@ public final class SxCountry extends SxLocation {
         super(id, coordinates, name, timeZone, attributes);
     }
 
-    // TODO: equals & hashcode
 }

@@ -6,9 +6,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- *
+ * Sypex query result: contains city, region and country info.
  */
 public final class SxGeoResult {
+    // TODO: add header params! Rework Ip to SxIP
+
     @NotNull
     public final String ip;
 
@@ -30,5 +32,23 @@ public final class SxGeoResult {
         this.country = country;
     }
 
-    // TODO: equals & hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SxGeoResult result = (SxGeoResult) o;
+        return Objects.equals(ip, result.ip) &&
+                Objects.equals(city, result.city) &&
+                Objects.equals(region, result.region) &&
+                Objects.equals(country, result.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip, city, region, country);
+    }
 }

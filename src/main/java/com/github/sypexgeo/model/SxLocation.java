@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /**
@@ -48,6 +49,10 @@ public abstract class SxLocation {
         return value == null ? null : value.value;
     }
 
+    public int getIntAttribute(@Nullable String name) {
+        return getIntAttribute(name, -1);
+    }
+
     public int getIntAttribute(@Nullable String name, int defaultValue) {
         SxValue value = getAttribute(name);
         try {
@@ -57,5 +62,24 @@ public abstract class SxLocation {
         }
     }
 
-    // TODO: equals & hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SxLocation location = (SxLocation) o;
+        return Objects.equals(id, location.id) &&
+                Objects.equals(coordinates, location.coordinates) &&
+                Objects.equals(name, location.name) &&
+                Objects.equals(timeZone, location.timeZone) &&
+                Objects.equals(attributes, location.attributes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, coordinates, name, timeZone, attributes);
+    }
 }
