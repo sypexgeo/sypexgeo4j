@@ -79,7 +79,7 @@ public class SxRestClient {
     }
 
     private static SxCity parseCity(@NotNull Element city) {
-        return new SxCity(getId(city), getCoordinates(city), getName(city), getAttributes(city));
+        return new SxCity(getId(city), getCoordinates(city), getName(city), getTimeZone(city), getAttributes(city));
     }
 
     private static SxRegion parseRegion(@NotNull Element region) {

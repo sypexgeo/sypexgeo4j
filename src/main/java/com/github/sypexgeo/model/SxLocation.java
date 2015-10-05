@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Base class for SxCity, SxRegion and SxCountry. Holds id, coordinates and name.
@@ -19,16 +20,20 @@ public abstract class SxLocation {
     @NotNull
     public final SxName name;
 
+    @Nullable
+    public final TimeZone timeZone;
+
     /**
      * Complete list of attributes: both parsed & unparsed. Unmodifiable map.
      */
     @NotNull
     public final Map<String, SxValue> attributes;
 
-    public SxLocation(@NotNull SxId id, @NotNull SxCoordinates coordinates, @NotNull SxName name, @NotNull Map<String, SxValue> attributes) {
+    public SxLocation(@NotNull SxId id, @NotNull SxCoordinates coordinates, @NotNull SxName name, @Nullable TimeZone timeZone, @NotNull Map<String, SxValue> attributes) {
         this.id = id;
         this.coordinates = coordinates;
         this.name = name;
+        this.timeZone = timeZone;
         this.attributes = Collections.unmodifiableMap(attributes);
     }
 

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Entry name for SxCity, SxRegion or SxCountry. Response can contains name in multiple languages.
@@ -38,5 +39,13 @@ public final class SxName {
         return valuesByCode.get(languageCode);
     }
 
-    //todo: equals & hashcode
+    @Override
+    public boolean equals(Object o) {
+        return this == o || !(o == null || getClass() != o.getClass()) && Objects.equals(valuesByCode, ((SxName) o).valuesByCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(valuesByCode);
+    }
 }
