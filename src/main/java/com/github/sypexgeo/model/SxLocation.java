@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- *
+ * Base class for SxCity, SxRegion and SxCountry. Holds id, coordinates and name.
  */
 public abstract class SxLocation {
     @NotNull

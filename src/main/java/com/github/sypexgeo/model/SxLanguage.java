@@ -3,7 +3,7 @@ package com.github.sypexgeo.model;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Convenience class to list the most frequent languages found in sypex responses.
  */
 public enum SxLanguage {
     RU("ru"),
