@@ -35,6 +35,9 @@ public class SxRestClient {
 
     private static final Pattern IPV4_PATTERN = Pattern.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 
+    private static final Pattern IPV4_COMMA_SEPARATED_PATTERN =
+            Pattern.compile("((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)(,\\n|,?$))");
+
     protected SxRestClient() {
     }
 
@@ -43,16 +46,21 @@ public class SxRestClient {
         return new SxRestClient();
     }
 
+    /**
+     * Executes REST request and return results for a given IP.
+     * Normally there is only 1 result in the list per IP.
+     *
+     * @param ip IP to get geo info for. Multiple IPs can be provided with comma separator.
+     * @return list of SxGeoResult results
+     * @throws IllegalArgumentException if IP address is invalid.
+     */
     @NotNull
-    public List<SxGeoResult> get(@NotNull String ip) {
-        if (!IPV4_PATTERN.matcher(ip).matches()) {
-            throw new IllegalArgumentException("Illegal IP address: " + ip);
+    public List<SxGeoResult> getList(@NotNull String ip) {
+        if (!IPV4_COMMA_SEPARATED_PATTERN.matcher(ip).matches()) {
+            throw new IllegalArgumentException("Illegal IP address or list: " + ip);
         }
         try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse("http://api.sypexgeo.net/xml/" + ip);
-            NodeList ipNodes = doc.getElementsByTagName("ip");
+            NodeList ipNodes = query(ip);
             List<SxGeoResult> result = new ArrayList<>();
             for (int i = 0; i < ipNodes.getLength(); i++) {
                 result.add(parseIp((Element) ipNodes.item(i)));
@@ -62,6 +70,27 @@ public class SxRestClient {
             throw new RuntimeException(e);
         }
     }
+
+    @Nullable
+    public SxGeoResult get(@NotNull String ip) {
+        if (!IPV4_PATTERN.matcher(ip).matches()) {
+            throw new IllegalArgumentException("Illegal IP address: " + ip);
+        }
+        try {
+            NodeList ipNodes = query(ip);
+            return ipNodes.getLength() == 0 ? null : parseIp((Element) ipNodes.item(0));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static NodeList query(@NotNull String ip) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse("http://api.sypexgeo.net/xml/" + ip);
+        return doc.getElementsByTagName("ip");
+    }
+
 
     private static SxGeoResult parseIp(Element ipNode) {
         String ip = ipNode.getAttribute("num");

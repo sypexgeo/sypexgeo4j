@@ -23,7 +23,7 @@ public class BaseSxText extends Assert {
 
     @NotNull
     protected SxGeoResult query(@NotNull String ip) {
-        List<SxGeoResult> result = client.get(ip);
+        List<SxGeoResult> result = client.getList(ip);
         assertNotNull(result);
         assertEquals(1, result.size());
 

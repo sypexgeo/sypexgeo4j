@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 public class ErrorsTest extends BaseSxText {
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void checkNullIp() {
         //noinspection ConstantConditions
         client.get(null);
