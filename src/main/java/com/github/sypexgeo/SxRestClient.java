@@ -92,7 +92,7 @@ public class SxRestClient {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/xml");
-        connection.setRequestProperty("User-Agent", "SypexGeo4J Java client");
+        connection.setRequestProperty("User-Agent", "SypexGeo4J Java client, https://github.com/sypexgeo/sypexgeo4j");
         try (InputStream is = connection.getInputStream()) {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
