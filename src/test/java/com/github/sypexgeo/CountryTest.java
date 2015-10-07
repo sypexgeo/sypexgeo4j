@@ -15,8 +15,8 @@ public class CountryTest extends BaseSxText {
     public void checkFrance() {
         SxCountry country = queryCountry("88.190.229.170");
 
-        assertEquals("Франция", country.name.ruValue());
-        assertEquals("France", country.name.enValue());
+        assertEquals("Франция", country.name.ru());
+        assertEquals("France", country.name.en());
         assertEquals(547030, country.getIntAttribute(SxValue.AREA));
         assertEquals(2988507, country.getIntAttribute(SxValue.CAPITAL_ID));
         assertEquals("Paris", country.getStringAttribute(SxValue.CAPITAL_EN));
@@ -31,8 +31,8 @@ public class CountryTest extends BaseSxText {
     public void checkUzbekistan() {
         SxCountry country = queryCountry("77.220.192.0");
 
-        assertEquals("Узбекистан", country.name.ruValue());
-        assertEquals("Usbekistan", country.name.deValue());
+        assertEquals("Узбекистан", country.name.ru());
+        assertEquals("Usbekistan", country.name.de());
         assertEquals(447400, country.getIntAttribute(SxValue.AREA));
         assertEquals(1512569, country.getIntAttribute(SxValue.CAPITAL_ID));
         assertEquals("Tashkent", country.getStringAttribute(SxValue.CAPITAL_EN));
@@ -47,8 +47,8 @@ public class CountryTest extends BaseSxText {
     public void checkRussia() {
         SxCountry country = queryCountry("195.209.84.0");
 
-        assertEquals("Россия", country.name.ruValue());
-        assertEquals("Rússia", country.name.ptValue());
+        assertEquals("Россия", country.name.ru());
+        assertEquals("Rússia", country.name.pt());
         assertEquals(17100000, country.getIntAttribute(SxValue.AREA));
         assertEquals(524901, country.getIntAttribute(SxValue.CAPITAL_ID));
         assertEquals("Москва", country.getStringAttribute(SxValue.CAPITAL_RU));

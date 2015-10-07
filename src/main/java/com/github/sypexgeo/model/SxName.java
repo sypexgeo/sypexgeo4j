@@ -19,32 +19,32 @@ public final class SxName {
     }
 
     @NotNull
-    public String ruValue() {
+    public String ru() {
         return Objects.requireNonNull(get(SxLanguage.RU));
     }
 
     @NotNull
-    public String enValue() {
+    public String en() {
         return Objects.requireNonNull(get(SxLanguage.EN));
     }
 
     @NotNull
-    public String deValue() {
+    public String de() {
         return Objects.requireNonNull(get(SxLanguage.DE));
     }
 
     @NotNull
-    public String frValue() {
+    public String fr() {
         return Objects.requireNonNull(get(SxLanguage.FR));
     }
 
     @NotNull
-    public String esValue() {
+    public String es() {
         return Objects.requireNonNull(get(SxLanguage.ES));
     }
 
     @NotNull
-    public String ptValue() {
+    public String pt() {
         return Objects.requireNonNull(get(SxLanguage.PT));
     }
 
