@@ -14,14 +14,14 @@ mvn -DskipTests=true clean package install
 ```java
 SxGeoResult result = new SxRestClient().get("93.92.217.228");
 
-// Most used non-null values have predefined fields
+// Most important fields have dedicated fields
 result.city.name.en() ➟ "Seattle"
 result.city.name.ru() ➟ "Сиэтл"
 result.city.timeZone ➟ "America/Los_Angeles"
 result.region.name.de() ➟ "Washington (Bundesstaat)"
 result.country.name.fr() ➟ "États-Unis"
 
-// All values are available as attributes
+// All values from response are available as attributes
 res.country.getStringAttribute(SxValue.AREA)  ➟ "9629091"
 res.country.getIntAttribute(SxValue.AREA)  ➟ 9629091
 ```
