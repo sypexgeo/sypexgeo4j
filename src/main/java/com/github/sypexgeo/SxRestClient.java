@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,13 @@ public class SxRestClient {
 
     @Nullable
     private final String key;
+
+    @Nullable
+    private SxCache cache;
+
+    protected int clientQueriesCount;
+
+    protected int restQueriesCount;
 
     protected SxRestClient(@Nullable String key) {
         this.key = key;
@@ -71,12 +79,18 @@ public class SxRestClient {
         if (!IPV4_COMMA_SEPARATED_PATTERN.matcher(ip).matches()) {
             throw new IllegalArgumentException("Illegal IP address or list: " + ip);
         }
+        clientQueriesCount++;
+        List<SxGeoResult> cachedResult = cache == null ? null : cache.getList(ip);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
         try {
             NodeList ipNodes = query(ip);
-            List<SxGeoResult> result = new ArrayList<>();
+            ArrayList<SxGeoResult> result = new ArrayList<>();
             for (int i = 0; i < ipNodes.getLength(); i++) {
                 result.add(parseIp((Element) ipNodes.item(i)));
             }
+            cache.add(ip, result);
             return result;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
@@ -91,15 +105,33 @@ public class SxRestClient {
         if (!IPV4_PATTERN.matcher(ip).matches()) {
             throw new IllegalArgumentException("Illegal IP address: " + ip);
         }
+        clientQueriesCount++;
+        List<SxGeoResult> cachedResult = cache == null ? null : cache.getList(ip);
+        if (cachedResult != null) {
+            return cachedResult.isEmpty() ? null : cachedResult.get(0);
+        }
         try {
             NodeList ipNodes = query(ip);
-            return ipNodes.getLength() == 0 ? null : parseIp((Element) ipNodes.item(0));
+            SxGeoResult result = ipNodes.getLength() == 0 ? null : parseIp((Element) ipNodes.item(0));
+            cache.add(ip, Collections.singletonList(result));
+            return result;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Sets cache to be used before making any network call or null if no cache is needed.
+     * By default no cache is used.
+     *
+     * @param cache to be used before calling remote service. If null -> uses default mode without caching.
+     */
+    public void setCache(@Nullable SxCache cache) {
+        this.cache = cache;
+    }
+
     private NodeList query(@NotNull String ip) throws ParserConfigurationException, SAXException, IOException {
+        restQueriesCount++;
         URL url = new URL("http://api.sypexgeo.net/" + (key == null ? "" : key + "/") + "xml/" + ip);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
