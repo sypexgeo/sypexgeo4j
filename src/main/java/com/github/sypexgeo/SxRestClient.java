@@ -90,7 +90,9 @@ public class SxRestClient {
             for (int i = 0; i < ipNodes.getLength(); i++) {
                 result.add(parseIp((Element) ipNodes.item(i)));
             }
-            cache.add(ip, result);
+            if (cache != null) {
+                cache.add(ip, result);
+            }
             return result;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
@@ -113,7 +115,9 @@ public class SxRestClient {
         try {
             NodeList ipNodes = query(ip);
             SxGeoResult result = ipNodes.getLength() == 0 ? null : parseIp((Element) ipNodes.item(0));
-            cache.add(ip, Collections.singletonList(result));
+            if (cache != null) {
+                cache.add(ip, Collections.singletonList(result));
+            }
             return result;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
