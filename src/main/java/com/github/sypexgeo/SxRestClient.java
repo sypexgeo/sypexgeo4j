@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -41,19 +42,27 @@ public class SxRestClient {
     private static final Pattern IPV4_COMMA_SEPARATED_PATTERN =
             Pattern.compile("((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)(,\\n|,?$))");
 
-    protected SxRestClient() {
-    }
+    @Nullable
+    private final String key;
 
-    @NotNull
-    public static SxRestClient create() {
-        return new SxRestClient();
+    protected SxRestClient(@Nullable String key) {
+        this.key = key;
     }
 
     /**
-     * Executes REST request and return results for a given IP.
+     * Creates new SxRestClient initialized with unique customer key.
+     * If customer key is null - anonymous queries are used (<=10k per month are allowed).
+     */
+    @NotNull
+    public static SxRestClient create(@Nullable String key) {
+        return new SxRestClient(key);
+    }
+
+    /**
+     * Executes REST request and return results for a given IPs.
      * Normally there is only 1 result in the list per IP.
      *
-     * @param ip IP to get geo info for. Multiple IPs can be provided with comma separator.
+     * @param ip IP to get geo info for. Multiple IPs can be used with comma as separator.
      * @return list of SxGeoResult results
      * @throws IllegalArgumentException if IP address is invalid.
      */
@@ -74,6 +83,9 @@ public class SxRestClient {
         }
     }
 
+    /**
+     * Executes REST request for a single IP address.
+     */
     @Nullable
     public SxGeoResult get(@NotNull String ip) {
         if (!IPV4_PATTERN.matcher(ip).matches()) {
@@ -87,8 +99,8 @@ public class SxRestClient {
         }
     }
 
-    private static NodeList query(@NotNull String ip) throws ParserConfigurationException, SAXException, IOException {
-        URL url = new URL("http://api.sypexgeo.net/xml/" + ip);
+    private NodeList query(@NotNull String ip) throws ParserConfigurationException, SAXException, IOException {
+        URL url = new URL("http://api.sypexgeo.net/" + (key == null ? "" : key + "/") + "xml/" + ip);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/xml");
@@ -101,10 +113,7 @@ public class SxRestClient {
         }
     }
 
-
     private static SxGeoResult parseIp(Element ipNode) {
-        String ip = ipNode.getAttribute("num");
-
         NodeList cityNodes = ipNode.getElementsByTagName("city");
         SxCity city = cityNodes.getLength() == 0 ? null : parseCity((Element) cityNodes.item(0));
 
@@ -114,19 +123,31 @@ public class SxRestClient {
         NodeList countryNodes = ipNode.getElementsByTagName("country");
         SxCountry country = countryNodes.getLength() == 0 ? null : parseCountry((Element) countryNodes.item(0));
 
-        return new SxGeoResult(ip, city, region, country);
+        Map<String, String> ipAttributes = new HashMap<>();
+        NamedNodeMap attributesMap = ipNode.getAttributes();
+        for (int i = 0; i < attributesMap.getLength(); i++) {
+            Node attribute = attributesMap.item(i);
+            ipAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
+        }
+        return new SxGeoResult(ipAttributes, city, region, country);
     }
 
+    @Nullable
     private static SxCity parseCity(@NotNull Element city) {
-        return new SxCity(getId(city), getCoordinates(city), getName(city), getTimeZone(city), getAttributes(city));
+        SxId id = getId(city);
+        return id == null ? null : new SxCity(id, getCoordinates(city), getName(city), getTimeZone(city), getAttributes(city));
     }
 
+    @Nullable
     private static SxRegion parseRegion(@NotNull Element region) {
-        return new SxRegion(getId(region), getCoordinates(region), getName(region), getTimeZone(region), getAttributes(region));
+        SxId id = getId(region);
+        return id == null ? null : new SxRegion(id, getCoordinates(region), getName(region), getTimeZone(region), getAttributes(region));
     }
 
+    @Nullable
     private static SxCountry parseCountry(Element country) {
-        return new SxCountry(getId(country), getCoordinates(country), getName(country), getTimeZone(country), getAttributes(country));
+        SxId id = getId(country);
+        return id == null ? null : new SxCountry(id, getCoordinates(country), getName(country), getTimeZone(country), getAttributes(country));
     }
 
     @NotNull
@@ -140,9 +161,10 @@ public class SxRestClient {
         return nodeList.getLength() > 0 ? nodeList.item(0).getTextContent() : null;
     }
 
-    @NotNull
+    @Nullable
     private static SxId getId(Element e) {
-        return new SxId(Integer.parseInt(getRequiredValue(e, SxValue.ID)));
+        String value = getValue(e, SxValue.ID);
+        return value == null || value.isEmpty() ? null : new SxId(Integer.parseInt(value));
     }
 
     @NotNull

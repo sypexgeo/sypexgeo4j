@@ -1,5 +1,6 @@
 package com.github.sypexgeo;
 
+import com.github.sypexgeo.model.SxGeoResult;
 import org.junit.Test;
 
 /**
@@ -31,5 +32,15 @@ public class ErrorsTest extends BaseSxText {
     @Test(expected = IllegalArgumentException.class)
     public void checkMalformedIp3() {
         client.get("yandex.ru");
+    }
+
+    @Test
+    public void checkNotExistingIp() {
+        SxGeoResult result = client.get("127.0.0.1");
+        assertNotNull(result);
+        assertEquals("127.0.0.1", result.ip);
+        assertNull(result.city);
+        assertNull(result.region);
+        assertNull(result.country);
     }
 }

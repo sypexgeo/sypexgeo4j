@@ -18,7 +18,7 @@ public class BaseSxText extends Assert {
 
     @Before
     public void setUp() {
-        client = SxRestClient.create();
+        client = SxRestClient.create(null);
     }
 
     @NotNull

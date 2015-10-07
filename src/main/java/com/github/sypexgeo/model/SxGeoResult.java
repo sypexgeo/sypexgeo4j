@@ -3,6 +3,8 @@ package com.github.sypexgeo.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -14,6 +16,9 @@ public final class SxGeoResult {
     @NotNull
     public final String ip;
 
+    @NotNull
+    public final Map<String, String> ipAttributes;
+
     @Nullable
     public final SxCity city;
 
@@ -23,10 +28,9 @@ public final class SxGeoResult {
     @Nullable
     public final SxCountry country;
 
-    public SxGeoResult(@NotNull String ip, @Nullable SxCity city, @Nullable SxRegion region, @Nullable SxCountry country) {
-        Objects.requireNonNull(ip);
-
-        this.ip = ip;
+    public SxGeoResult(@NotNull Map<String, String> ipAttributes, @Nullable SxCity city, @Nullable SxRegion region, @Nullable SxCountry country) {
+        this.ipAttributes = Collections.unmodifiableMap(ipAttributes);
+        ip = Objects.requireNonNull(ipAttributes.get("num"));
         this.city = city;
         this.region = region;
         this.country = country;
