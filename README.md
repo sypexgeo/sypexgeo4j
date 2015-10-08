@@ -3,10 +3,14 @@ Sypex REST API allows to run up to 10000 requests per month for free.
 
 [![Build Status](https://travis-ci.org/sypexgeo/sypexgeo4j.svg?branch=master)]	(https://travis-ci.org/sypexgeo/sypexgeo4j)
 
-## Building
+## Maven
 
-```
-mvn -DskipTests=true clean package install
+```xml
+<dependency>
+    <groupId>com.github.sypexgeo</groupId>
+    <artifactId>sypexgeo</artifactId>
+    <version>1.0.0</version>
+</dependency
 ```
 
 ## Usage
