@@ -12,7 +12,9 @@ mvn -DskipTests=true clean package install
 ## Usage
 
 ```java
-SxGeoResult result = new SxRestClient().get("93.92.217.228");
+// Initialize client. The 'auth key' may be null
+SxGeoResult result = new SxRestClient("auth key").get("93.92.217.228");
+result.setCache(myCacheImpl); // set cache implementation (optional) 
 
 // Most important fields have dedicated fields
 result.city.name.en() ➟ "Seattle"

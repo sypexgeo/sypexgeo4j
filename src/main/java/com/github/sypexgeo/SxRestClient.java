@@ -47,7 +47,7 @@ public class SxRestClient {
     private final String key;
 
     @Nullable
-    private SxCache cache;
+    protected SxCache cache;
 
     protected int clientQueriesCount;
 
