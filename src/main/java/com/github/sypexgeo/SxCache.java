@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- *
+ * Cache interface for SxRestClient
  */
 public interface SxCache {
 
