@@ -29,7 +29,7 @@ public class CountryTest extends BaseSxText {
 
     @Test
     public void checkUzbekistan() {
-        SxCountry country = queryCountry("77.220.192.0");
+        SxCountry country = queryCountry("31.135.208.0");
 
         assertEquals("Узбекистан", country.name.ru());
         assertEquals("Usbekistan", country.name.de());
