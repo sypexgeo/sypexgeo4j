@@ -9,7 +9,7 @@ Sypex REST API allows to run up to 10000 requests per month for free.
 <dependency>
     <groupId>com.github.sypexgeo</groupId>
     <artifactId>sypexgeo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency
 ```
 
