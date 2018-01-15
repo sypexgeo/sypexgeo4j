@@ -17,7 +17,7 @@ Sypex REST API allows to run up to 10000 requests per month for free.
 
 ```java
 // Initialize client. The 'auth key' may be null
-SxGeoResult result = new SxRestClient("auth key").get("93.92.217.228");
+SxGeoResult result = SxRestClient.create("auth key").get("93.92.217.228");
 result.setCache(myCacheImpl); // set cache implementation (optional) 
 
 // Most important fields have dedicated fields
